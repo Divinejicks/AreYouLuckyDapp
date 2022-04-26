@@ -50,4 +50,8 @@ contract AYLToken is ERC20Capped, Ownable {
     function updateAYLPrice(uint256 _newPrice) external onlyOwner {
         price = _newPrice;
     }
+
+    
+    receive() external payable {}
+    fallback() external payable {}
 }
