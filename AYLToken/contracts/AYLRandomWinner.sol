@@ -3,13 +3,11 @@ pragma solidity ^0.8.7;
 
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
+import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 
-interface IAYLToken {
-    function approve(address spender, uint256 amount) external returns(bool);
-    function allowance(address owner, address spender) external returns(uint256);
-    function transferFrom(address from, address to, uint256 amount) external returns(bool);
-    function owner() external returns(address);
-}
+error AYLRandomWinner__FailedToStartGame();
+error AYLRandomWinner__FailedToJoinAGame();
+error AYLRandomWinner__FailedToTransferTokensToWinner();
 
 contract AYLRandomWinner is VRFConsumerBaseV2 {
     IAYLToken aylToken;
@@ -62,7 +60,7 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
     event JoinedGame(address player, uint256 gameId, uint256 entryFee);
 
     constructor(address _aylToken, uint64 _subscriptionId) VRFConsumerBaseV2(vrfCoordinator) {
-        aylToken = IAYLToken(_aylToken);
+        aylToken = IERC20(_aylToken);
         _onwerOfATLToken = aylToken.owner();
         COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator);
         subscriptionId = _subscriptionId;
@@ -72,15 +70,17 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
     function startGame(uint256 _maxNumOfPlayers, uint256 _entryFee) external {
         require(!existingGame[_maxNumOfPlayers][_entryFee], "There is already an existing game with this entry, go and join the game");
         
+        bool success = aylToken.transferFrom(msg.sender, _onwerOfATLToken, _entryFee*10**18);
+        if(!success) {
+            revert AYLRandomWinner__FailedToStartGame();
+        }
+        
         allGames[nextGameId] = GameParams(
             nextGameId,
             _maxNumOfPlayers,
             _entryFee
         );
         players[nextGameId].push(msg.sender);
-
-        _approveAndTransfer(_onwerOfATLToken, msg.sender, _entryFee);
-
         existingGame[_maxNumOfPlayers][_entryFee] = true;
         gameStarted[nextGameId] = true;
 
@@ -94,8 +94,11 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
         require(_entryFee == allGames[_gameId].entryFee, "Entry fee should be the required entry fee amount");
         require(players[_gameId].length < allGames[_gameId].maxNumOfPlayers, "Max players reached");
 
+        bool success = aylToken.transferFrom(msg.sender, _onwerOfATLToken, _entryFee*10**18);
+        if(!success){
+            revert AYLRandomWinner__FailedToJoinAGame();
+        }
         players[_gameId].push(msg.sender);
-        _approveAndTransfer(_onwerOfATLToken, msg.sender, _entryFee);
         emit JoinedGame(msg.sender, _gameId, _entryFee);
 
         if(players[_gameId].length == allGames[_gameId].maxNumOfPlayers) {
@@ -103,8 +106,9 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
             uint256 winnerIndex = randomNumbers[_gameId] % players[_gameId].length;
             address winner = players[_gameId][winnerIndex];
             uint256 totalAmount = allGames[_gameId].maxNumOfPlayers * _entryFee;
-            uint256 amountSentToWinner = (totalAmount*90)/100; //90% is sent to the winner and 10% to the owner
-            _approveAndTransfer(winner, _onwerOfATLToken, amountSentToWinner);
+            uint256 amountSentToWinner = ((totalAmount*10**18)*90)/100; //90% is sent to the winner and 10% to the owner
+
+            bool success = aylToken.transferFrom(_onwerOfATLToken, winner, amountSentToWinner);
             emit GameEnded(winner, amountSentToWinner, requestId);
         }
     }
@@ -127,11 +131,5 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
             callbackGasLimit,
             numWords
         );
-    }
-
-    function _approveAndTransfer(address _owner, address spender, uint256 _amount) internal {
-        aylToken.approve(spender, _amount*10**18);
-        aylToken.allowance(_owner, spender);
-        aylToken.transferFrom(spender, _owner, _amount*10**18);
     }
 }
