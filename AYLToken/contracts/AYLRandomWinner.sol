@@ -10,7 +10,7 @@ error AYLRandomWinner__FailedToJoinAGame();
 error AYLRandomWinner__FailedToTransferTokensToWinner();
 
 contract AYLRandomWinner is VRFConsumerBaseV2 {
-    IAYLToken aylToken;
+    IERC20 public aylToken;
     VRFCoordinatorV2Interface COORDINATOR;
 
     //parameters of a game
@@ -61,7 +61,7 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
 
     constructor(address _aylToken, uint64 _subscriptionId) VRFConsumerBaseV2(vrfCoordinator) {
         aylToken = IERC20(_aylToken);
-        _onwerOfATLToken = aylToken.owner();
+        _onwerOfATLToken = msg.sender;
         COORDINATOR = VRFCoordinatorV2Interface(vrfCoordinator);
         subscriptionId = _subscriptionId;
     }
@@ -94,8 +94,8 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
         require(_entryFee == allGames[_gameId].entryFee, "Entry fee should be the required entry fee amount");
         require(players[_gameId].length < allGames[_gameId].maxNumOfPlayers, "Max players reached");
 
-        bool success = aylToken.transferFrom(msg.sender, _onwerOfATLToken, _entryFee*10**18);
-        if(!success){
+        bool _success = aylToken.transferFrom(msg.sender, _onwerOfATLToken, _entryFee*10**18);
+        if(!_success){
             revert AYLRandomWinner__FailedToJoinAGame();
         }
         players[_gameId].push(msg.sender);
@@ -109,6 +109,9 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
             uint256 amountSentToWinner = ((totalAmount*10**18)*90)/100; //90% is sent to the winner and 10% to the owner
 
             bool success = aylToken.transferFrom(_onwerOfATLToken, winner, amountSentToWinner);
+            if(!success){
+                revert AYLRandomWinner__FailedToTransferTokensToWinner();
+            }
             emit GameEnded(winner, amountSentToWinner, requestId);
         }
     }

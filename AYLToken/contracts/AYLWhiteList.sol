@@ -25,7 +25,7 @@ contract AYLWhiteList {
     }
 
     //get all whitelisted addresses and display the count
-    function getWhitelistedAddresses() external onlyOwner returns(address[] memory) {
+    function getWhitelistedAddresses() external view onlyOwner returns(address[] memory) {
         return whitelistedList;
     }
 
