@@ -1,6 +1,6 @@
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { expect } from "chai";
-import { Contract, Signer } from "ethers";
+import { BigNumber, Contract, Signer } from "ethers";
 import { ethers } from "hardhat";
 
 //We create a describe block for the aylToken unit test
@@ -81,6 +81,16 @@ describe("AYLToken", () => {
       ).to.revertedWith("Not enough ether");
     });
 
+    it("Owner should receive ayl token without pay", async () => {
+      const ownersBalance = await aylToken.balanceOf(accounts[0].address);
+      await aylToken.connect(accounts[0]).buyAYLCoins(1);
+      const newbalance = await aylToken.balanceOf(accounts[0].address);
+      const balance = BigNumber.from(newbalance).sub(
+        BigNumber.from(ownersBalance)
+      );
+      expect(ethers.utils.formatEther(balance)).to.equal("1.0");
+    });
+
     it("Should update price", async () => {
       const price = await aylToken.price();
       await aylToken
@@ -90,6 +100,14 @@ describe("AYLToken", () => {
       const difference = newPrice - price;
 
       expect(ethers.utils.formatEther(difference)).to.equal("0.00495");
+    });
+
+    it("Should not update price", async () => {
+      await expect(
+        aylToken
+          .connect(accounts[1])
+          .updateAYLPrice(ethers.utils.parseEther("0.005"))
+      ).to.revertedWith("Ownable: caller is not the owner");
     });
   });
 });
