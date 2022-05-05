@@ -6,8 +6,6 @@ import type {
   BigNumber,
   BytesLike,
   CallOverrides,
-  ContractTransaction,
-  Overrides,
   PopulatedTransaction,
   Signer,
   utils,
@@ -23,49 +21,16 @@ import type {
 
 export interface AYLWhiteListInterface extends utils.Interface {
   functions: {
-    "addToWhiteList()": FunctionFragment;
-    "getWhitelistedAddresses()": FunctionFragment;
-    "numberOfWhitelistedAddresses()": FunctionFragment;
     "whitelistedAddress(address)": FunctionFragment;
   };
 
-  getFunction(
-    nameOrSignatureOrTopic:
-      | "addToWhiteList"
-      | "getWhitelistedAddresses"
-      | "numberOfWhitelistedAddresses"
-      | "whitelistedAddress"
-  ): FunctionFragment;
+  getFunction(nameOrSignatureOrTopic: "whitelistedAddress"): FunctionFragment;
 
-  encodeFunctionData(
-    functionFragment: "addToWhiteList",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "getWhitelistedAddresses",
-    values?: undefined
-  ): string;
-  encodeFunctionData(
-    functionFragment: "numberOfWhitelistedAddresses",
-    values?: undefined
-  ): string;
   encodeFunctionData(
     functionFragment: "whitelistedAddress",
     values: [string]
   ): string;
 
-  decodeFunctionResult(
-    functionFragment: "addToWhiteList",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "getWhitelistedAddresses",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
-    functionFragment: "numberOfWhitelistedAddresses",
-    data: BytesLike
-  ): Result;
   decodeFunctionResult(
     functionFragment: "whitelistedAddress",
     data: BytesLike
@@ -101,39 +66,15 @@ export interface AYLWhiteList extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
-    addToWhiteList(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<ContractTransaction>;
-
-    getWhitelistedAddresses(overrides?: CallOverrides): Promise<[string[]]>;
-
-    numberOfWhitelistedAddresses(
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
     whitelistedAddress(
       arg0: string,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
   };
 
-  addToWhiteList(
-    overrides?: Overrides & { from?: string | Promise<string> }
-  ): Promise<ContractTransaction>;
-
-  getWhitelistedAddresses(overrides?: CallOverrides): Promise<string[]>;
-
-  numberOfWhitelistedAddresses(overrides?: CallOverrides): Promise<BigNumber>;
-
   whitelistedAddress(arg0: string, overrides?: CallOverrides): Promise<boolean>;
 
   callStatic: {
-    addToWhiteList(overrides?: CallOverrides): Promise<void>;
-
-    getWhitelistedAddresses(overrides?: CallOverrides): Promise<string[]>;
-
-    numberOfWhitelistedAddresses(overrides?: CallOverrides): Promise<BigNumber>;
-
     whitelistedAddress(
       arg0: string,
       overrides?: CallOverrides
@@ -143,14 +84,6 @@ export interface AYLWhiteList extends BaseContract {
   filters: {};
 
   estimateGas: {
-    addToWhiteList(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<BigNumber>;
-
-    getWhitelistedAddresses(overrides?: CallOverrides): Promise<BigNumber>;
-
-    numberOfWhitelistedAddresses(overrides?: CallOverrides): Promise<BigNumber>;
-
     whitelistedAddress(
       arg0: string,
       overrides?: CallOverrides
@@ -158,18 +91,6 @@ export interface AYLWhiteList extends BaseContract {
   };
 
   populateTransaction: {
-    addToWhiteList(
-      overrides?: Overrides & { from?: string | Promise<string> }
-    ): Promise<PopulatedTransaction>;
-
-    getWhitelistedAddresses(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
-    numberOfWhitelistedAddresses(
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     whitelistedAddress(
       arg0: string,
       overrides?: CallOverrides

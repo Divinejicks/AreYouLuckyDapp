@@ -137,4 +137,44 @@ describe("AYLToken", () => {
       );
     });
   });
+
+  describe("Whitelist contract", () => {
+    it("should add address to withlist", async () => {
+      await aylToken.connect(accounts[0]).addAddressToWhiteList();
+      await aylToken.connect(accounts[1]).addAddressToWhiteList();
+      await aylToken.connect(accounts[2]).addAddressToWhiteList();
+      await aylToken.connect(accounts[3]).addAddressToWhiteList();
+      await aylToken.connect(accounts[4]).addAddressToWhiteList();
+      let whitelistedAddress = await aylToken
+        .connect(accounts[0])
+        .getAllWhiteListedAddress();
+      expect(whitelistedAddress.length).to.equal(5);
+    });
+
+    it("Should not add address to whitelist more than once", async () => {
+      await expect(
+        aylToken.connect(accounts[1]).addAddressToWhiteList()
+      ).to.revertedWith("This address has already been whitelisted");
+    });
+
+    //Change the maxWhiteListedAddresses in the contract from 100 to 5
+    it("Should not add address to whitelist when max is reached", async () => {
+      await expect(
+        aylToken.connect(accounts[6]).addAddressToWhiteList()
+      ).to.revertedWith("Maximum number of whitelisted addresses reached");
+    });
+
+    it("Should get whitelisted addresses", async () => {
+      let whitelistedAddress = await aylToken
+        .connect(accounts[0])
+        .getAllWhiteListedAddress();
+      expect(whitelistedAddress.length).to.equal(5);
+    });
+
+    it("Should not get whitelisted addresses", async () => {
+      await expect(
+        aylToken.connect(accounts[1]).getAllWhiteListedAddress()
+      ).to.revertedWith("Ownable: caller is not the owner");
+    });
+  });
 });

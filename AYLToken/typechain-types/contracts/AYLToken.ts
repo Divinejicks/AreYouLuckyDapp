@@ -29,6 +29,7 @@ import type {
 
 export interface AYLTokenInterface extends utils.Interface {
   functions: {
+    "addAddressToWhiteList()": FunctionFragment;
     "allowance(address,address)": FunctionFragment;
     "approve(address,uint256)": FunctionFragment;
     "balanceInTheContract()": FunctionFragment;
@@ -37,6 +38,7 @@ export interface AYLTokenInterface extends utils.Interface {
     "cap()": FunctionFragment;
     "decimals()": FunctionFragment;
     "decreaseAllowance(address,uint256)": FunctionFragment;
+    "getAllWhiteListedAddress()": FunctionFragment;
     "hasReceivedCoinsOnSignup(address)": FunctionFragment;
     "increaseAllowance(address,uint256)": FunctionFragment;
     "issueAirDrop(address[])": FunctionFragment;
@@ -52,11 +54,13 @@ export interface AYLTokenInterface extends utils.Interface {
     "transferFrom(address,address,uint256)": FunctionFragment;
     "transferOwnership(address)": FunctionFragment;
     "updateAYLPrice(uint256)": FunctionFragment;
+    "whitelistedAddress(address)": FunctionFragment;
     "withdraw()": FunctionFragment;
   };
 
   getFunction(
     nameOrSignatureOrTopic:
+      | "addAddressToWhiteList"
       | "allowance"
       | "approve"
       | "balanceInTheContract"
@@ -65,6 +69,7 @@ export interface AYLTokenInterface extends utils.Interface {
       | "cap"
       | "decimals"
       | "decreaseAllowance"
+      | "getAllWhiteListedAddress"
       | "hasReceivedCoinsOnSignup"
       | "increaseAllowance"
       | "issueAirDrop"
@@ -80,9 +85,14 @@ export interface AYLTokenInterface extends utils.Interface {
       | "transferFrom"
       | "transferOwnership"
       | "updateAYLPrice"
+      | "whitelistedAddress"
       | "withdraw"
   ): FunctionFragment;
 
+  encodeFunctionData(
+    functionFragment: "addAddressToWhiteList",
+    values?: undefined
+  ): string;
   encodeFunctionData(
     functionFragment: "allowance",
     values: [string, string]
@@ -105,6 +115,10 @@ export interface AYLTokenInterface extends utils.Interface {
   encodeFunctionData(
     functionFragment: "decreaseAllowance",
     values: [string, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getAllWhiteListedAddress",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "hasReceivedCoinsOnSignup",
@@ -154,8 +168,16 @@ export interface AYLTokenInterface extends utils.Interface {
     functionFragment: "updateAYLPrice",
     values: [BigNumberish]
   ): string;
+  encodeFunctionData(
+    functionFragment: "whitelistedAddress",
+    values: [string]
+  ): string;
   encodeFunctionData(functionFragment: "withdraw", values?: undefined): string;
 
+  decodeFunctionResult(
+    functionFragment: "addAddressToWhiteList",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
   decodeFunctionResult(
@@ -171,6 +193,10 @@ export interface AYLTokenInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "decreaseAllowance",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "getAllWhiteListedAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(
@@ -216,6 +242,10 @@ export interface AYLTokenInterface extends utils.Interface {
   ): Result;
   decodeFunctionResult(
     functionFragment: "updateAYLPrice",
+    data: BytesLike
+  ): Result;
+  decodeFunctionResult(
+    functionFragment: "whitelistedAddress",
     data: BytesLike
   ): Result;
   decodeFunctionResult(functionFragment: "withdraw", data: BytesLike): Result;
@@ -294,6 +324,10 @@ export interface AYLToken extends BaseContract {
   removeListener: OnEvent<this>;
 
   functions: {
+    addAddressToWhiteList(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<ContractTransaction>;
+
     allowance(
       owner: string,
       spender: string,
@@ -324,6 +358,8 @@ export interface AYLToken extends BaseContract {
       subtractedValue: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    getAllWhiteListedAddress(overrides?: CallOverrides): Promise<[string[]]>;
 
     hasReceivedCoinsOnSignup(
       arg0: string,
@@ -384,10 +420,19 @@ export interface AYLToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
 
+    whitelistedAddress(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
     withdraw(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
   };
+
+  addAddressToWhiteList(
+    overrides?: Overrides & { from?: string | Promise<string> }
+  ): Promise<ContractTransaction>;
 
   allowance(
     owner: string,
@@ -419,6 +464,8 @@ export interface AYLToken extends BaseContract {
     subtractedValue: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
+
+  getAllWhiteListedAddress(overrides?: CallOverrides): Promise<string[]>;
 
   hasReceivedCoinsOnSignup(
     arg0: string,
@@ -479,11 +526,15 @@ export interface AYLToken extends BaseContract {
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
+  whitelistedAddress(arg0: string, overrides?: CallOverrides): Promise<boolean>;
+
   withdraw(
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
 
   callStatic: {
+    addAddressToWhiteList(overrides?: CallOverrides): Promise<void>;
+
     allowance(
       owner: string,
       spender: string,
@@ -514,6 +565,8 @@ export interface AYLToken extends BaseContract {
       subtractedValue: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    getAllWhiteListedAddress(overrides?: CallOverrides): Promise<string[]>;
 
     hasReceivedCoinsOnSignup(
       arg0: string,
@@ -570,6 +623,11 @@ export interface AYLToken extends BaseContract {
       overrides?: CallOverrides
     ): Promise<void>;
 
+    whitelistedAddress(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
     withdraw(overrides?: CallOverrides): Promise<void>;
   };
 
@@ -607,6 +665,10 @@ export interface AYLToken extends BaseContract {
   };
 
   estimateGas: {
+    addAddressToWhiteList(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<BigNumber>;
+
     allowance(
       owner: string,
       spender: string,
@@ -637,6 +699,8 @@ export interface AYLToken extends BaseContract {
       subtractedValue: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    getAllWhiteListedAddress(overrides?: CallOverrides): Promise<BigNumber>;
 
     hasReceivedCoinsOnSignup(
       arg0: string,
@@ -697,12 +761,21 @@ export interface AYLToken extends BaseContract {
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
 
+    whitelistedAddress(
+      arg0: string,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     withdraw(
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
+    addAddressToWhiteList(
+      overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
     allowance(
       owner: string,
       spender: string,
@@ -737,6 +810,10 @@ export interface AYLToken extends BaseContract {
       spender: string,
       subtractedValue: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    getAllWhiteListedAddress(
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     hasReceivedCoinsOnSignup(
@@ -798,6 +875,11 @@ export interface AYLToken extends BaseContract {
     updateAYLPrice(
       _newPrice: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
+    ): Promise<PopulatedTransaction>;
+
+    whitelistedAddress(
+      arg0: string,
+      overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
     withdraw(
