@@ -29,11 +29,14 @@ import type {
 export interface AYLRandomWinnerInterface extends utils.Interface {
   functions: {
     "_onwerOfATLToken()": FunctionFragment;
-    "allGames(uint256)": FunctionFragment;
     "aylToken()": FunctionFragment;
     "existingGame(uint256,uint256)": FunctionFragment;
+    "gameParams(uint256)": FunctionFragment;
     "gameStarted(uint256)": FunctionFragment;
+    "getPlayers(uint256)": FunctionFragment;
+    "getPlayersCount(uint256)": FunctionFragment;
     "joinGame(uint256,uint256)": FunctionFragment;
+    "nextGameId()": FunctionFragment;
     "players(uint256,uint256)": FunctionFragment;
     "randomNumbers(uint256)": FunctionFragment;
     "rawFulfillRandomWords(uint256,uint256[])": FunctionFragment;
@@ -44,11 +47,14 @@ export interface AYLRandomWinnerInterface extends utils.Interface {
   getFunction(
     nameOrSignatureOrTopic:
       | "_onwerOfATLToken"
-      | "allGames"
       | "aylToken"
       | "existingGame"
+      | "gameParams"
       | "gameStarted"
+      | "getPlayers"
+      | "getPlayersCount"
       | "joinGame"
+      | "nextGameId"
       | "players"
       | "randomNumbers"
       | "rawFulfillRandomWords"
@@ -60,22 +66,34 @@ export interface AYLRandomWinnerInterface extends utils.Interface {
     functionFragment: "_onwerOfATLToken",
     values?: undefined
   ): string;
-  encodeFunctionData(
-    functionFragment: "allGames",
-    values: [BigNumberish]
-  ): string;
   encodeFunctionData(functionFragment: "aylToken", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "existingGame",
     values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
+    functionFragment: "gameParams",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
     functionFragment: "gameStarted",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getPlayers",
+    values: [BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "getPlayersCount",
     values: [BigNumberish]
   ): string;
   encodeFunctionData(
     functionFragment: "joinGame",
     values: [BigNumberish, BigNumberish]
+  ): string;
+  encodeFunctionData(
+    functionFragment: "nextGameId",
+    values?: undefined
   ): string;
   encodeFunctionData(
     functionFragment: "players",
@@ -99,17 +117,23 @@ export interface AYLRandomWinnerInterface extends utils.Interface {
     functionFragment: "_onwerOfATLToken",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "allGames", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "aylToken", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "existingGame",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "gameParams", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "gameStarted",
     data: BytesLike
   ): Result;
+  decodeFunctionResult(functionFragment: "getPlayers", data: BytesLike): Result;
+  decodeFunctionResult(
+    functionFragment: "getPlayersCount",
+    data: BytesLike
+  ): Result;
   decodeFunctionResult(functionFragment: "joinGame", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: "nextGameId", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "players", data: BytesLike): Result;
   decodeFunctionResult(
     functionFragment: "randomNumbers",
@@ -198,7 +222,15 @@ export interface AYLRandomWinner extends BaseContract {
   functions: {
     _onwerOfATLToken(overrides?: CallOverrides): Promise<[string]>;
 
-    allGames(
+    aylToken(overrides?: CallOverrides): Promise<[string]>;
+
+    existingGame(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[boolean]>;
+
+    gameParams(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
@@ -209,24 +241,28 @@ export interface AYLRandomWinner extends BaseContract {
       }
     >;
 
-    aylToken(overrides?: CallOverrides): Promise<[string]>;
-
-    existingGame(
-      arg0: BigNumberish,
-      arg1: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[boolean]>;
-
     gameStarted(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<[boolean]>;
+
+    getPlayers(
+      _gameId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[string[]]>;
+
+    getPlayersCount(
+      _gameId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<[BigNumber]>;
 
     joinGame(
       _gameId: BigNumberish,
       _entryFee: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
+
+    nextGameId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     players(
       arg0: BigNumberish,
@@ -256,7 +292,15 @@ export interface AYLRandomWinner extends BaseContract {
 
   _onwerOfATLToken(overrides?: CallOverrides): Promise<string>;
 
-  allGames(
+  aylToken(overrides?: CallOverrides): Promise<string>;
+
+  existingGame(
+    arg0: BigNumberish,
+    arg1: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<boolean>;
+
+  gameParams(
     arg0: BigNumberish,
     overrides?: CallOverrides
   ): Promise<
@@ -267,21 +311,25 @@ export interface AYLRandomWinner extends BaseContract {
     }
   >;
 
-  aylToken(overrides?: CallOverrides): Promise<string>;
-
-  existingGame(
-    arg0: BigNumberish,
-    arg1: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<boolean>;
-
   gameStarted(arg0: BigNumberish, overrides?: CallOverrides): Promise<boolean>;
+
+  getPlayers(
+    _gameId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<string[]>;
+
+  getPlayersCount(
+    _gameId: BigNumberish,
+    overrides?: CallOverrides
+  ): Promise<BigNumber>;
 
   joinGame(
     _gameId: BigNumberish,
     _entryFee: BigNumberish,
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
+
+  nextGameId(overrides?: CallOverrides): Promise<BigNumber>;
 
   players(
     arg0: BigNumberish,
@@ -311,7 +359,15 @@ export interface AYLRandomWinner extends BaseContract {
   callStatic: {
     _onwerOfATLToken(overrides?: CallOverrides): Promise<string>;
 
-    allGames(
+    aylToken(overrides?: CallOverrides): Promise<string>;
+
+    existingGame(
+      arg0: BigNumberish,
+      arg1: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<boolean>;
+
+    gameParams(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<
@@ -322,24 +378,28 @@ export interface AYLRandomWinner extends BaseContract {
       }
     >;
 
-    aylToken(overrides?: CallOverrides): Promise<string>;
-
-    existingGame(
-      arg0: BigNumberish,
-      arg1: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<boolean>;
-
     gameStarted(
       arg0: BigNumberish,
       overrides?: CallOverrides
     ): Promise<boolean>;
+
+    getPlayers(
+      _gameId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<string[]>;
+
+    getPlayersCount(
+      _gameId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
 
     joinGame(
       _gameId: BigNumberish,
       _entryFee: BigNumberish,
       overrides?: CallOverrides
     ): Promise<void>;
+
+    nextGameId(overrides?: CallOverrides): Promise<BigNumber>;
 
     players(
       arg0: BigNumberish,
@@ -405,8 +465,6 @@ export interface AYLRandomWinner extends BaseContract {
   estimateGas: {
     _onwerOfATLToken(overrides?: CallOverrides): Promise<BigNumber>;
 
-    allGames(arg0: BigNumberish, overrides?: CallOverrides): Promise<BigNumber>;
-
     aylToken(overrides?: CallOverrides): Promise<BigNumber>;
 
     existingGame(
@@ -415,8 +473,23 @@ export interface AYLRandomWinner extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
+    gameParams(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
     gameStarted(
       arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getPlayers(
+      _gameId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<BigNumber>;
+
+    getPlayersCount(
+      _gameId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
@@ -425,6 +498,8 @@ export interface AYLRandomWinner extends BaseContract {
       _entryFee: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
+
+    nextGameId(overrides?: CallOverrides): Promise<BigNumber>;
 
     players(
       arg0: BigNumberish,
@@ -455,11 +530,6 @@ export interface AYLRandomWinner extends BaseContract {
   populateTransaction: {
     _onwerOfATLToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
-    allGames(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     aylToken(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     existingGame(
@@ -468,8 +538,23 @@ export interface AYLRandomWinner extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
+    gameParams(
+      arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
     gameStarted(
       arg0: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getPlayers(
+      _gameId: BigNumberish,
+      overrides?: CallOverrides
+    ): Promise<PopulatedTransaction>;
+
+    getPlayersCount(
+      _gameId: BigNumberish,
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
@@ -478,6 +563,8 @@ export interface AYLRandomWinner extends BaseContract {
       _entryFee: BigNumberish,
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
+
+    nextGameId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     players(
       arg0: BigNumberish,

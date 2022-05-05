@@ -109,5 +109,32 @@ describe("AYLToken", () => {
           .updateAYLPrice(ethers.utils.parseEther("0.005"))
       ).to.revertedWith("Ownable: caller is not the owner");
     });
+
+    it("Get balance of contract", async () => {
+      let contractBalance = await aylToken
+        .connect(accounts[0])
+        .balanceInTheContract();
+      expect(ethers.utils.formatEther(contractBalance)).to.equal("0.0001");
+    });
+
+    it("Should not get balance", async () => {
+      await expect(
+        aylToken.connect(accounts[1]).balanceInTheContract()
+      ).to.revertedWith("Ownable: caller is not the owner");
+    });
+
+    it("should withdraw balance to owner", async () => {
+      await aylToken.connect(accounts[0]).withdraw();
+      let contractBalance = await aylToken
+        .connect(accounts[0])
+        .balanceInTheContract();
+      expect(ethers.utils.formatEther(contractBalance)).to.equal("0.0");
+    });
+
+    it("Should not withdraw balance", async () => {
+      await expect(aylToken.connect(accounts[2]).withdraw()).to.revertedWith(
+        "Ownable: caller is not the owner"
+      );
+    });
   });
 });

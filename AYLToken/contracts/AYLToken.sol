@@ -1,19 +1,21 @@
-//SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.7;
+//SPDX-License-Identifier: MIT
+pragma solidity 0.8.7;
 
 import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Capped.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
+error AYLToken__FailedToWithdrawEth();
+
 contract AYLToken is ERC20Capped, Ownable {
     //Max number of users that will receive AYL coins on signup
-    uint256 maxNumberOfSignUpAddresses = 500;  //use 2 when running the tests
+    uint256 maxNumberOfSignUpAddresses = 500;  //use 2 when running the tests instead of 500
     //Checks if the address has already been given coins
     mapping(address => bool) public hasReceivedCoinsOnSignup;
     //Keep count of the number of users signing up
     uint256 public numberOfSignupUsers;
     //Price for 1 AYL Coin for ICO and purchase
     uint256 public price = 0.00005 ether;
-    address _owner;
+    address immutable _owner;
 
     constructor(uint256 cap) ERC20("AYLToken", "AYL") ERC20Capped(cap) {
         ERC20._mint(msg.sender, 10000000*10**18);
@@ -49,6 +51,17 @@ contract AYLToken is ERC20Capped, Ownable {
     //This function is used to update the price of 1 AYL
     function updateAYLPrice(uint256 _newPrice) external onlyOwner {
         price = _newPrice;
+    }
+
+    function balanceInTheContract() external onlyOwner view returns(uint256){
+        return address(this).balance;
+    }
+
+    function withdraw() external onlyOwner {
+        (bool success, ) = _owner.call{value: address(this).balance}("");
+        if(!success) {
+            revert AYLToken__FailedToWithdrawEth();
+        }
     }
 
     

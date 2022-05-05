@@ -1,5 +1,5 @@
-//SPDX-License-Identifier: Unlicense
-pragma solidity ^0.8.7;
+//SPDX-License-Identifier: MIT
+pragma solidity 0.8.7;
 
 import "@chainlink/contracts/src/v0.8/interfaces/VRFCoordinatorV2Interface.sol";
 import "@chainlink/contracts/src/v0.8/VRFConsumerBaseV2.sol";
@@ -8,13 +8,15 @@ import "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 error AYLRandomWinner__FailedToStartGame();
 error AYLRandomWinner__FailedToJoinAGame();
 error AYLRandomWinner__FailedToTransferTokensToWinner();
+error AYLRandomWinner__NotEnoughAYLTokens();
+error AYLRandomWinner__SameParamGameExist();
 
 contract AYLRandomWinner is VRFConsumerBaseV2 {
     IERC20 public aylToken;
     VRFCoordinatorV2Interface COORDINATOR;
 
     //parameters of a game
-    struct GameParams {
+    struct GameParam {
         uint256 gameId; //id of the game
         uint256 maxNumOfPlayers; //maximum number of players for a specific game id
         uint256 entryFee; //entry fee for a specific game id
@@ -30,9 +32,9 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
     mapping(uint256 => bool) public gameStarted;
 
     //A container that holds the gameid and its struct
-    mapping(uint256 => GameParams) public allGames;
+    mapping(uint256 => GameParam) public gameParams;
 
-    uint256 nextGameId;
+    uint256 public nextGameId;
     address public _onwerOfATLToken; //Owner of the ATLToken
 
     //subscription id, gotten from when you subscribe for LINK
@@ -66,16 +68,30 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
         subscriptionId = _subscriptionId;
     }
 
+    function getPlayers(uint256 _gameId) external view returns(address[] memory){
+        return players[_gameId];
+    }
+
+    function getPlayersCount(uint256 _gameId) external view returns(uint256){
+        return players[_gameId].length;
+    }
+
     //this function starts a new game specifying the max number of players and the entry fee
     function startGame(uint256 _maxNumOfPlayers, uint256 _entryFee) external {
-        require(!existingGame[_maxNumOfPlayers][_entryFee], "There is already an existing game with this entry, go and join the game");
-        
+        if(existingGame[_maxNumOfPlayers][_entryFee]){
+            revert AYLRandomWinner__SameParamGameExist();
+        }
+
+        if(aylToken.balanceOf(msg.sender) < _entryFee*10**18) {
+            revert AYLRandomWinner__NotEnoughAYLTokens();
+        }
+
         bool success = aylToken.transferFrom(msg.sender, _onwerOfATLToken, _entryFee*10**18);
         if(!success) {
             revert AYLRandomWinner__FailedToStartGame();
         }
         
-        allGames[nextGameId] = GameParams(
+        gameParams[nextGameId] = GameParam(
             nextGameId,
             _maxNumOfPlayers,
             _entryFee
@@ -91,8 +107,8 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
     //This function is used to join a game, specifying the gameid and the entry fee
     function joinGame(uint256 _gameId, uint256 _entryFee) external {
         require(gameStarted[_gameId], "A game with this id has not been started");
-        require(_entryFee == allGames[_gameId].entryFee, "Entry fee should be the required entry fee amount");
-        require(players[_gameId].length < allGames[_gameId].maxNumOfPlayers, "Max players reached");
+        require(_entryFee == gameParams[_gameId].entryFee, "Entry fee should be the required entry fee amount");
+        require(players[_gameId].length < gameParams[_gameId].maxNumOfPlayers, "Max players reached");
 
         bool _success = aylToken.transferFrom(msg.sender, _onwerOfATLToken, _entryFee*10**18);
         if(!_success){
@@ -101,11 +117,11 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
         players[_gameId].push(msg.sender);
         emit JoinedGame(msg.sender, _gameId, _entryFee);
 
-        if(players[_gameId].length == allGames[_gameId].maxNumOfPlayers) {
+        if(players[_gameId].length == gameParams[_gameId].maxNumOfPlayers) {
             _requestRandomness();
             uint256 winnerIndex = randomNumbers[_gameId] % players[_gameId].length;
             address winner = players[_gameId][winnerIndex];
-            uint256 totalAmount = allGames[_gameId].maxNumOfPlayers * _entryFee;
+            uint256 totalAmount = gameParams[_gameId].maxNumOfPlayers * _entryFee;
             uint256 amountSentToWinner = ((totalAmount*10**18)*90)/100; //90% is sent to the winner and 10% to the owner
 
             bool success = aylToken.transferFrom(_onwerOfATLToken, winner, amountSentToWinner);
