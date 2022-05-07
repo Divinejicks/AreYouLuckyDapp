@@ -12,6 +12,7 @@
     "@coinbase/wallet-sdk": "^3.0.10",
     "@walletconnect/web3-provider": "^1.7.8",
     "ethers": "^5.6.4",
+    "materialize-css": "^1.0.0-rc.2",
     "next": "12.1.5",
     "react": "18.1.0",
     "react-dom": "18.1.0",

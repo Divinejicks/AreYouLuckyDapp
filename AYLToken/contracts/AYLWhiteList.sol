@@ -5,7 +5,7 @@ contract AYLWhiteList {
     //list of whitelisted addresses
     address[] whitelistedList;
     //Max number of whitelisted address
-    uint256 maxWhiteListedAddresses = 5; //when running test, change this from  100 to 5
+    uint256 maxWhiteListedAddresses = 100; //when running test, change this from  100 to 5
     uint256 numberOfWhitelistedAddresses;
     //check if an address has been whitelisted
     mapping(address => bool) public whitelistedAddress;

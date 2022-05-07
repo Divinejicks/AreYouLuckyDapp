@@ -9,7 +9,7 @@ error AYLToken__FailedToWithdrawEth();
 
 contract AYLToken is ERC20Capped, Ownable, AYLWhiteList {
     //Max number of users that will receive AYL coins on signup
-    uint256 maxNumberOfSignUpAddresses = 2;  //use 2 when running the tests instead of 500
+    uint256 maxNumberOfSignUpAddresses = 500;  //use 2 when running the tests instead of 500
     //Checks if the address has already been given coins
     mapping(address => bool) public hasReceivedCoinsOnSignup;
     //Keep count of the number of users signing up
