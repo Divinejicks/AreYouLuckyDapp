@@ -142,7 +142,7 @@ const ProjectsIHaveWorkedOn = () => {
                 <p>contact me through mail at <strong>mbuhdivinecho@gmail.com</strong></p>
               </div>
               <button className="py-3 lg:py-4 px-12 lg:px-10 text-white-500 font-semibold rounded-lg bg-orange-500 hover:shadow-orange-md transition-all outline-none "
-          onClick="https://github.com/Divinejicks?tab=repositories">My Github</button>
+                  onClick={() => window.location = 'https://github.com/Divinejicks?tab=repositories'}>My Github</button>
             </div>
             <div
               className="absolute bg-black-600 opacity-5 w-11/12 roudned-lg h-60 sm:h-56 top-0 mt-8 mx-auto left-0 right-0"

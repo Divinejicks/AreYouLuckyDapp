@@ -1,7 +1,8 @@
 import React from "react";
-import Facebook from "../../public/assets/Icon/facebook.svg";
 import Twitter from "../../public/assets/Icon/twitter.svg";
 import LinkedIn from "../../public/assets/Icon/linkedin.svg";
+import Discord from "../../public/assets/Icon/discord.svg";
+
 
 const Footer = () => {
   return (
@@ -16,13 +17,18 @@ const Footer = () => {
           </p>
           <div className="flex w-full mt-2 mb-8 -mx-2">
           <div className="mx-2 bg-white-500 rounded-full items-center justify-center flex p-2 shadow-md">
-              <button>
+              <button onClick={() => window.location = 'https://twitter.com/Talkweb03'}>
               <Twitter className="h-6 w-6" />
               </button>
             </div>
             <div className="mx-2 bg-white-500 rounded-full items-center justify-center flex p-2 shadow-md">
-              <button>
+              <button onClick={() => window.location = 'https://www.linkedin.com/in/divine-cho-257858131/'}>
               <LinkedIn className="h-6 w-6" />
+              </button>
+            </div>
+            <div className="mx-2 bg-white-500 rounded-full items-center justify-center flex p-2 shadow-md">
+              <button onClick={() => window.location = 'Jicks#2735'}>
+              <Discord className="h-6 w-6" />
               </button>
             </div>
            </div>
