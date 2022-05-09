@@ -11,6 +11,7 @@ const Header = () => {
       setScrollActive(window.scrollY > 20);
     });
   }, []);
+  
   return (
     <>
       <header
