@@ -1,6 +1,8 @@
 import React from "react";
 import Facebook from "../../public/assets/Icon/facebook.svg";
 import Twitter from "../../public/assets/Icon/twitter.svg";
+import LinkedIn from "../../public/assets/Icon/linkedin.svg";
+
 const Footer = () => {
   return (
     <div className="bg-white-300 pt-44 pb-24">
@@ -13,20 +15,17 @@ const Footer = () => {
             social outlets
           </p>
           <div className="flex w-full mt-2 mb-8 -mx-2">
-            <div className="mx-2 bg-white-500 rounded-full items-center justify-center flex p-2 shadow-md">
-              <button>
-              <Facebook className="h-6 w-6" />
-              </button>
-            </div>
-            <div className="mx-2 bg-white-500 rounded-full items-center justify-center flex p-2 shadow-md">
+          <div className="mx-2 bg-white-500 rounded-full items-center justify-center flex p-2 shadow-md">
               <button>
               <Twitter className="h-6 w-6" />
               </button>
             </div>
-            {/* <div className="mx-2 bg-white-500 rounded-full items-center justify-center flex p-2 shadow-md">
-              <Instagram className="h-6 w-6" />
-            </div> */}
-          </div>
+            <div className="mx-2 bg-white-500 rounded-full items-center justify-center flex p-2 shadow-md">
+              <button>
+              <LinkedIn className="h-6 w-6" />
+              </button>
+            </div>
+           </div>
           <p className="text-gray-400">©2022divinejicks</p>
         </div>
         <div className=" row-span-2 sm:col-span-2 sm:col-start-7 sm:col-end-9 flex flex-col">
