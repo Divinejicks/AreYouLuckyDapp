@@ -1,7 +1,13 @@
 import Image from "next/image";
 import React from "react";
+import {useRouter} from "next/router";
 
 const MyProject = () => {
+  const router = useRouter();
+  const showPlayGamePage = () => {
+    router.push('/game')
+  }
+
   return (
     <div
       className="max-w-screen-xl mt-8 mb-6 sm:mt-14 sm:mb-14 px-6 sm:px-8 lg:px-16 mx-auto"
@@ -53,7 +59,7 @@ const MyProject = () => {
             </li>
           </ul>
           <button className="mt-3 py-3 lg:py-4 px-12 lg:px-8 text-white-500 font-semibold rounded-lg bg-orange-500 hover:shadow-orange-md transition-all outline-none "
-          >Play game</button>
+           onClick={showPlayGamePage}>Play game</button>
         </div>
       </div>
     </div>

@@ -4,7 +4,7 @@ import hre from "hardhat";
 const main = async () => {
   const AYLRandomWinner = await ethers.getContractFactory("AYLRandomWinner");
   const aylRandomWinner = await AYLRandomWinner.deploy(
-    "0x92A9A4B0582e87DBef3DE7A88EBc838AB27AC5b4",
+    "0x28ECc17584FB4A32D76031BdDF9cEc8c7df17cdd",
     3321
   );
   await aylRandomWinner.deployed();
@@ -15,7 +15,7 @@ const main = async () => {
 
   await hre.run("verify:verify", {
     address: aylRandomWinner.address,
-    constructorArguments: ["0xF340f93a6D841Cd835f6e05032e844e08c8a3Ee9", 3321],
+    constructorArguments: ["0x28ECc17584FB4A32D76031BdDF9cEc8c7df17cdd", 3321],
   });
 };
 
