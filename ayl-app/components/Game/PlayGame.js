@@ -178,10 +178,18 @@ const PlayGame = ({}) => {
                           Take a look at the open games and see which one you will like to join. If you don't see any of your choice, 
                           then start a new game below.
                         </p>
-                        <button className="font-medium tracking-wide py-2 mt-2 px-5 sm:px-8 border border-orange-500 
-                      text-orange-500 bg-white-500 outline-none rounded-l-full rounded-r-full 
-                      capitalize hover:bg-orange-500 hover:text-white-500 transition-all hover:shadow-orange"
-                      >See opened games</button>
+                        <div className="my-2">
+                          <button className="font-medium tracking-wide py-2 mt-2 mx-5 px-5 sm:px-8 border border-orange-500 
+                            text-orange-500 bg-white-500 outline-none rounded-l-full rounded-r-full 
+                            capitalize hover:bg-orange-500 hover:text-white-500 transition-all hover:shadow-orange"
+                            >See opened games
+                          </button>
+                          <button className="font-medium tracking-wide py-2 mt-2 mx-5 px-5 sm:px-8 border border-orange-500 
+                            text-orange-500 bg-white-500 outline-none rounded-l-full rounded-r-full 
+                            capitalize hover:bg-orange-500 hover:text-white-500 transition-all hover:shadow-orange"
+                            >See previous winners
+                          </button>
+                        </div>
                     </div>
                 </div>
             </div>

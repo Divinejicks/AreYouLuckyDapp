@@ -73,6 +73,9 @@ const ProjectsIHaveWorkedOn = () => {
                   Handled the testing and security 
                 </li>
                 <li className="relative check custom-list my-2">
+                  Dynamic NFTs where players can upgrade their NFTs attributes
+                </li>
+                <li className="relative check custom-list my-2">
                   Assisted in promoting the game on Twitter and Discord
                 </li>
               </ul>
