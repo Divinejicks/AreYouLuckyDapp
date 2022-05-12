@@ -58,7 +58,8 @@ const MyProject = () => {
               A staking section for the AYL coins.
             </li>
           </ul>
-          <button className="mt-3 py-3 lg:py-4 px-12 lg:px-8 text-white-500 font-semibold rounded-lg bg-orange-500 hover:shadow-orange-md transition-all outline-none "
+          <button className="mt-3 py-3 lg:py-4 px-12 lg:px-8 text-white-500 font-semibold rounded-lg bg-orange-500 
+          hover:shadow-orange-md transition-all outline-none "
            onClick={showPlayGamePage}>Play game</button>
         </div>
       </div>

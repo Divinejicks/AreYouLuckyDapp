@@ -4,12 +4,16 @@ import Web3Modal from "web3modal";
 import Authereum from "authereum";
 import { ethers } from 'ethers';
 import { useEffect, useRef, useState } from "react";
+import {AYLToken_ABI, AYLToken_Address, AYLRandomWinner_ABI, AYLRandomWinner_Address} from "../../constants/index";
 
 const PlayGame = ({}) => {
     const [walletConnected, setWalletConnected] = useState(false);
     const [loading, setLoading] = useState(false)
     const [web3Modal, setWeb3Modal] = useState(null);
     const [address, setAddress] = useState("")
+    const [hyphenatedAddress, setHyphenatedAddress] = useState("")
+    const [addressBalance, setAddressBalance] = useState("");
+    const [signUpNumber, setSignUpNumber] = useState(0);
 
     useEffect(() => {
         const providerOptions = { 
@@ -53,15 +57,37 @@ const PlayGame = ({}) => {
         }
         
         const _address = await provider.getSigner().getAddress();
+        setAddress(_address);
         const _addressSub1 = _address.substring(0, 5);
         const _addressSub2 = _address.substring(38);
-        setAddress(_addressSub1 + "...." +_addressSub2);
+        setHyphenatedAddress(_addressSub1 + "...." +_addressSub2);
     
         if(IsSigner){
           const signer = await provider.getSigner();
           return signer;
         }
         return provider;
+    }
+
+    const getAYLTokenProvider = async (provider) => {
+      const aylToken = new ethers.Contract(
+        AYLToken_Address,
+        AYLToken_ABI,
+        provider
+      )
+
+      return aylToken;
+    }
+
+    const getAYLTokenSigner = async () => {
+      const signer = await getProviderOrSigner(true);
+      const aylToken = new ethers.Contract(
+        AYLToken_Address,
+        AYLToken_ABI,
+        signer
+      )
+
+      return aylToken;
     }
 
     const addListeners = async (web3ModalProvider) => {
@@ -80,20 +106,25 @@ const PlayGame = ({}) => {
 
     const connectWallet = async () => {
         try{
-            await getProviderOrSigner();
+            const provider = await getProviderOrSigner();
             setWalletConnected(true);
+            getAddressBalance(provider)
+            getSignNumber(provider)
         }catch(err) {
             console.log(err)
         }
     }
 
-    const disconnectWallet = async () => {
-        try{
-            await getProviderOrSigner();
-            setWalletConnected(false);
-        }catch(err) {
-            console.log(err)
-        }
+    const getAddressBalance = async (provider) => {
+      const aylToken = await getAYLTokenProvider(provider);
+      const balance = await aylToken.balanceOf(await provider.getSigner().getAddress());
+      setAddressBalance(ethers.utils.formatEther(balance));
+    }
+
+    const getSignNumber = async (provider) => {
+      const aylToken = await getAYLTokenProvider(provider);
+      const numbSigner = await aylToken.numberOfSignupUsers();
+      setSignUpNumber(ethers.utils.formatEther(numbSigner)*10**18);
     }
 
     const renderButton = () => {
@@ -113,26 +144,31 @@ const PlayGame = ({}) => {
             return (
                 <>
                     <button className="font-medium tracking-wide py-2 px-5 sm:px-8 border border-orange-500 
-                    text-orange-500 bg-white-500 outline-none rounded-l-full rounded-r-full capitalize hover:bg-orange-500 
-                    hover:text-white-500 transition-all hover:shadow-orange"
-                    onClick={disconnectWallet}>
-                            Wallet Connected on {address}
+                    text-orange-500 bg-white-500 outline-none rounded-l-full rounded-r-full capitalize ">
+                            {hyphenatedAddress} With {addressBalance} AYL
                     </button>
                 </>
             )
         }
     }
 
+    const onsignUp = async () => {
+      const aylToken = await getAYLTokenSigner();
+      await aylToken.receiveCoinsOnSignup();
+    }
+
     return(
-        <div className="bg-gradient-to-b from-white-300 to-white-500 w-full mt-20 py-7">
+        <div className="bg-gradient-to-b from-white-300 to-white-500 w-full mt-20 py-7" id="playgame">
             <div className="max-w-screen-xl px-6 sm:px-8 lg:px-16 mx-auto flex flex-col w-full text-center justify-center">
                 <div>
                    {renderButton()}
                 </div>
-                <div className="grid grid-flow-row sm:grid-flow-col grid-cols-1 sm:grid-cols-3 gap-4 lg:gap-12 py-4 lg:py-4 px-6 sm:px-0 lg:px-6">
+                <div className="grid grid-flow-row sm:grid-flow-col grid-cols-1 sm:grid-cols-1 gap-4 lg:gap-12 py-4 lg:py-4 px-6 sm:px-0 lg:px-6">
                     <div className="flex flex-col justify-center items-center">
-                        <h1>Add UI/UX for the game here</h1>
+                        <p>The <strong>first 500 users</strong> to sign up gets <strong>200 AYL Coins</strong>, Sign up now</p>
                     </div>
+                    <button className="mt-3 py-3 lg:py-4 px-12 lg:px-8 text-white-500 font-semibold rounded-lg bg-orange-500 
+              hover:shadow-orange-md transition-all outline-none " onClick={onsignUp}>Sign Up {signUpNumber}/500</button>
                 </div>
             </div>
         </div>

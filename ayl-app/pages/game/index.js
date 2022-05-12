@@ -1,5 +1,6 @@
 import Head from "next/head";
 import GameLayout from "../../components/Game/GameLayout/GameLayout";
+import HowToPlay from "../../components/Game/HowToPlay";
 import PlayGame from "../../components/Game/PlayGame";
 
 export default function AreYouLucky() {
@@ -11,6 +12,7 @@ export default function AreYouLucky() {
             </Head>
             <GameLayout>
                 <PlayGame />
+                <HowToPlay />
             </GameLayout>
         </>
     )
