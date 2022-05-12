@@ -171,6 +171,50 @@ const PlayGame = ({}) => {
               hover:shadow-orange-md transition-all outline-none " onClick={onsignUp}>Sign Up {signUpNumber}/500</button>
                 </div>
             </div>
+            <div className="max-w-screen-xl px-6 sm:px-8 lg:px-16 mx-auto flex flex-col w-full text-center justify-center">
+               <div className="grid grid-flow-row sm:grid-flow-col grid-cols-1 sm:grid-cols-1 gap-4 lg:gap-12 py-4 lg:py-4 px-6 sm:px-0 lg:px-6">
+                    <div className="flex flex-col justify-center items-center">
+                        <p>
+                          Take a look at the open games and see which one you will like to join. If you don't see any of your choice, 
+                          then start a new game below.
+                        </p>
+                        <button className="font-medium tracking-wide py-2 mt-2 px-5 sm:px-8 border border-orange-500 
+                      text-orange-500 bg-white-500 outline-none rounded-l-full rounded-r-full 
+                      capitalize hover:bg-orange-500 hover:text-white-500 transition-all hover:shadow-orange"
+                      >See opened games</button>
+                    </div>
+                </div>
+            </div>
+            <div className="max-w-screen-xl px-6 sm:px-8 lg:px-16 mx-auto flex flex-col w-full text-center justify-center">
+              <p><strong>Are You Lucky....</strong> If yes, then start a new game or join an existing one.</p>
+               <div className="grid grid-flow-row sm:grid-flow-col grid-cols-1 sm:grid-cols-1 gap-4 lg:gap-12 py-4 lg:py-4 px-6 sm:px-0 lg:px-6">
+                    <div className="flex flex-col justify-center items-center">
+                        <p><strong>Start a new game</strong></p>
+                        <input className="shadow appearance-none border rounded py-2 mt-1 px-3 text-gray-700 leading-tight 
+                        focus:outline-none focus:shadow-outline" type="number" placeholder="Number of players" />
+                        <input className="shadow appearance-none border rounded py-2 mt-2 px-3 text-gray-700 leading-tight 
+                        focus:outline-none focus:shadow-outline" type="number" placeholder="Entry fee" />
+                        <button className="font-medium tracking-wide py-0 px-2 mt-2 sm:px-8 border border-orange-500 
+                          text-orange-500 bg-white-500 outline-none rounded-l-full rounded-r-full 
+                          capitalize hover:bg-orange-500 hover:text-white-500 transition-all hover:shadow-orange"
+                      >Start a New Game</button>
+                    </div>
+                    <div className="flex flex-col justify-center items-center">
+                        <p><strong>Join an existing game</strong></p>
+                        <input className="shadow appearance-none border rounded py-2 mt-1 px-3 text-gray-700 leading-tight 
+                        focus:outline-none focus:shadow-outline" type="number" placeholder="Game Id" />
+                        <input className="shadow appearance-none border rounded py-2 mt-2 px-3 text-gray-700 leading-tight 
+                        focus:outline-none focus:shadow-outline" type="number" placeholder="Entry fee" />
+                        <button className="font-medium tracking-wide py-0 px-2 mt-2 sm:px-8 border border-orange-500 
+                          text-orange-500 bg-white-500 outline-none rounded-l-full rounded-r-full 
+                          capitalize hover:bg-orange-500 hover:text-white-500 transition-all hover:shadow-orange"
+                      >Join Game</button>
+                    </div>
+                    <div className="flex flex-col justify-center items-center">
+                        <p><strong>Winner takes 90%</strong></p>
+                    </div>
+                </div>
+            </div>
         </div>
     )
 }

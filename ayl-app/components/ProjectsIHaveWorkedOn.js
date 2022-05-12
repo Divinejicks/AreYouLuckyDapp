@@ -25,7 +25,7 @@ const ProjectsIHaveWorkedOn = () => {
                   src="/assets/Free.png"
                   width={145}
                   height={165}
-                  alt="Free Plan"
+                  alt="Peace Keepers"
                 />
               </div>
               <p className="text-lg text-black-600 font-medium capitalize my-2 sm:my-7">
@@ -59,7 +59,7 @@ const ProjectsIHaveWorkedOn = () => {
                   src="/assets/GobFather.gif"
                   width={300}
                   height={200}
-                  alt="Standard Plan"
+                  alt="Gob father"
                 />
               </div>
               <p className="text-lg text-black-600 font-medium capitalize my-2 sm:my-7">
@@ -90,7 +90,7 @@ const ProjectsIHaveWorkedOn = () => {
                   src="/assets/Premium.png"
                   width={145}
                   height={165}
-                  alt="Premium Plan"
+                  alt="sportless"
                 />
               </div>
               <p className="text-lg text-black-600 font-medium capitalize my-2 sm:my-7">

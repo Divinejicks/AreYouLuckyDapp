@@ -17,7 +17,7 @@ const MyProject = () => {
         <div className="flex w-full justify-end">
           <div className="h-full w-full p-4">
             <Image
-              src="/assets/myproject.png"
+              src="/assets/aylgame.png"
               alt="AreYouLuck"
               layout="responsive"
               quality={100}

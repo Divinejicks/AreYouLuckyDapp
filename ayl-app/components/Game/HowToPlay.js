@@ -21,6 +21,28 @@ const HowToPlay = ({}) => {
                 <p className="leading-normal w-10/12 sm:w-7/12 lg:w-6/12 mx-auto my-2 text-center">
                  After connect your wallet, if you have not signed up, then sign up to receive some AYL coins.
                 </p>
+                <p><strong>How to approve</strong></p>
+                <p>
+                    To <strong>approve</strong> that your coins should be used for transaction in the game, specify the amount 
+                    of ayl coins that you want this contract to spend. <strong>This will be done automatically for 
+                    you when you start a new game or join a game.</strong>
+                </p>
+                <br />
+                <p><strong>Start a new game</strong></p>
+                <p>
+                    In order for you to start a new game, you have to <strong>first of all approve the contract to spend your 
+                    coins.</strong> After approving, click on the <strong>Start New Game</strong> and specify the <strong>
+                    number of players</strong> (When players reaches the specified number, a random winner will be chosen) and 
+                    <strong> the entry fee</strong> (the amount of ayl token that players joining the game will have to provide).
+                </p>
+                <br />
+                <p><strong>Joining an open game</strong></p>
+                <p>
+                    In order for you to join a game, you have to <strong>first of all approve the contract to spend your 
+                    coins.</strong> After approving, click on the <strong>Join Game</strong> and specify the <strong>
+                    game Id</strong> (which is the id of the opened game that you want to join) and 
+                    <strong> the entry fee</strong> (which is the exact ayl coins that was specified by the person who started the game).
+                </p>
             </div>
           </div>
         </div>
