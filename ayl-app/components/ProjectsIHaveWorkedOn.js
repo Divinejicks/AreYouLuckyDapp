@@ -56,9 +56,9 @@ const ProjectsIHaveWorkedOn = () => {
             <div className="flex flex-col justify-center items-center border-2 border-gray-500 rounded-xl py-4 px-6 lg:px-12 xl:px-20">
               <div className="p-4 lg:p-0 mt-6 lg:mt-16">
                 <Image
-                  src="/assets/Standard.png"
-                  width={145}
-                  height={165}
+                  src="/assets/GobFather.gif"
+                  width={300}
+                  height={200}
                   alt="Standard Plan"
                 />
               </div>
