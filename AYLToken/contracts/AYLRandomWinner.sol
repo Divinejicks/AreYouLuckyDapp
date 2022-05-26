@@ -110,6 +110,10 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
         require(_entryFee == gameParams[_gameId].entryFee, "Entry fee should be the required entry fee amount");
         require(players[_gameId].length < gameParams[_gameId].maxNumOfPlayers, "Max players reached");
 
+        if(aylToken.balanceOf(msg.sender) < _entryFee*10**18) {
+            revert AYLRandomWinner__NotEnoughAYLTokens();
+        }
+
         bool _success = aylToken.transferFrom(msg.sender, _onwerOfATLToken, _entryFee*10**18);
         if(!_success){
             revert AYLRandomWinner__FailedToJoinAGame();

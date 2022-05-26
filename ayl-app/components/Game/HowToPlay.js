@@ -24,8 +24,7 @@ const HowToPlay = ({}) => {
                 <p><strong>How to approve</strong></p>
                 <p>
                     To <strong>approve</strong> that your coins should be used for transaction in the game, specify the amount 
-                    of ayl coins that you want this contract to spend. <strong>This will be done automatically for 
-                    you when you start a new game or join a game.</strong>
+                    of ayl coins that you want this contract to spend. <strong>Then click on the approve button.</strong>
                 </p>
                 <br />
                 <p><strong>Start a new game</strong></p>
