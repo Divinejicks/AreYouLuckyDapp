@@ -22,6 +22,13 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
         uint256 entryFee; //entry fee for a specific game id
     }
 
+    struct OpenGames {
+        uint256 gameId;
+        uint256 entryFee;
+        uint256 maxNumberOfPlayers;
+        bool isOpen;
+    }
+
     mapping(uint256 => address[]) public players; //addresses of players for a specific game id
     
     //Checks if there is an existing game with the same max number and entry fee
@@ -33,6 +40,12 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
 
     //A container that holds the gameid and its struct
     mapping(uint256 => GameParam) public gameParams;
+
+    //A container to hold requestId to requestCounter
+    mapping(uint256 => uint256) requestIdToRequestCounter;
+
+    //A mapping that holds request counter to Random words
+    mapping(uint256 => uint256) requestCounterToRandomeWords;
 
     uint256 public nextGameId;
     address public _onwerOfATLToken; //Owner of the ATLToken
@@ -54,11 +67,10 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
     //number of random words you want, 1 cost 10,000 gas so make sure your callbackGasLimit is valid
     uint32 numWords =  1;
 
-    uint256[] public randomNumbers;
-    uint256 public requestId;
+    uint256 requestCounter;
 
     event GameStarted(uint256 gameId, uint256 maxPlayers, uint256 entryFee);
-    event GameEnded(address winner, uint256 amountWon, uint256 requestId);
+    event GameEnded(address winner, uint256 amountWon);
     event JoinedGame(address player, uint256 gameId, uint256 entryFee);
 
     constructor(address _aylToken, uint64 _subscriptionId) VRFConsumerBaseV2(vrfCoordinator) {
@@ -91,6 +103,8 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
             revert AYLRandomWinner__FailedToStartGame();
         }
         
+        _requestRandomness();
+        nextGameId++;
         gameParams[nextGameId] = GameParam(
             nextGameId,
             _maxNumOfPlayers,
@@ -100,8 +114,9 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
         existingGame[_maxNumOfPlayers][_entryFee] = true;
         gameStarted[nextGameId] = true;
 
+
+
         emit GameStarted(nextGameId, _maxNumOfPlayers, _entryFee);
-        nextGameId++;
     }
 
     //This function is used to join a game, specifying the gameid and the entry fee
@@ -122,8 +137,8 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
         emit JoinedGame(msg.sender, _gameId, _entryFee);
 
         if(players[_gameId].length == gameParams[_gameId].maxNumOfPlayers) {
-            _requestRandomness();
-            uint256 winnerIndex = randomNumbers[_gameId] % players[_gameId].length;
+            
+            uint256 winnerIndex = requestCounterToRandomeWords[_gameId] % players[_gameId].length;
             address winner = players[_gameId][winnerIndex];
             uint256 totalAmount = gameParams[_gameId].maxNumOfPlayers * _entryFee;
             uint256 amountSentToWinner = ((totalAmount*10**18)*90)/100; //90% is sent to the winner and 10% to the owner
@@ -132,27 +147,31 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
             if(!success){
                 revert AYLRandomWinner__FailedToTransferTokensToWinner();
             }
-            emit GameEnded(winner, amountSentToWinner, requestId);
+            emit GameEnded(winner, amountSentToWinner);
         }
     }
 
     function fulfillRandomWords(
-    uint256, /* requestId */
+    uint256 requestId,
     uint256[] memory randomWords
     ) internal override {
-        randomNumbers.push(randomWords[0]); //user the 0 index, since i am requesting just for 1 random number
+        uint256 _requestCounter = requestIdToRequestCounter[requestId];
+        requestCounterToRandomeWords[_requestCounter] = randomWords[0];
     }
 
     //when this function is called, it checks if the subscription has enough LINK
     //The VRCoordinator then calls fullfillRandomWords() to generate randomness
     function _requestRandomness() internal {
         // Will revert if subscription is not set and funded with LINK.
-        requestId = COORDINATOR.requestRandomWords(
+        uint256 requestId = COORDINATOR.requestRandomWords(
             keyHash,
             subscriptionId,
             requestConfirmations,
             callbackGasLimit,
             numWords
         );
+
+        requestCounter += 1;
+        requestIdToRequestCounter[requestId] = requestCounter;
     }
 }

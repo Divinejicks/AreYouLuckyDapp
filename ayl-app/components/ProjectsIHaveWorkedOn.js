@@ -1,6 +1,7 @@
 import React from "react";
 import Image from "next/image";
 import MyGithub from "./MyGithub";
+import Link from "next/link";
 
 const ProjectsIHaveWorkedOn = () => {
   return (
@@ -42,6 +43,12 @@ const ProjectsIHaveWorkedOn = () => {
                   Integrated moralis hooks in the front end (web3uikit)
                 </li>
                 <li className="relative check custom-list my-2">
+                  Created the Moralis Server for the project.
+                </li>
+                <li className="relative check custom-list my-2">
+                  Connected all the buttons to the backend contract
+                </li>
+                <li className="relative check custom-list my-2">
                   Assisted on the front end.
                 </li>
               </ul>
@@ -49,8 +56,8 @@ const ProjectsIHaveWorkedOn = () => {
                 <p className="text-2xl text-black-600 text-center mb-4 ">
                   Check it out
                 </p>
-                <button className="font-medium tracking-wide py-2 sm:px-18 border border-orange-500 text-orange-500 bg-white-500 outline-none rounded-l-full rounded-r-full capitalize hover:bg-orange-500 hover:text-white-500 transition-all hover:shadow-orange "
-                      >Peace Keepers</button>
+                <a href="https://peacekeeper-chainlink-hakathon2022-n4fr6yj62-peacekeepers.vercel.app/" target="_blank" className="font-medium tracking-wide py-2 sm:px-18 border border-orange-500 text-orange-500 bg-white-500 outline-none rounded-l-full rounded-r-full capitalize hover:bg-orange-500 hover:text-white-500 transition-all hover:shadow-orange "
+                    >Peace Keepers</a>
               </div>
             </div>
             <div className="flex flex-col justify-center items-center border-2 border-gray-500 rounded-xl py-4 px-6 lg:px-12 xl:px-20">
