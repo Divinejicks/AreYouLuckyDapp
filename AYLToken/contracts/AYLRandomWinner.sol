@@ -22,13 +22,6 @@ contract AYLRandomWinner is VRFConsumerBaseV2 {
         uint256 entryFee; //entry fee for a specific game id
     }
 
-    struct OpenGames {
-        uint256 gameId;
-        uint256 entryFee;
-        uint256 maxNumberOfPlayers;
-        bool isOpen;
-    }
-
     mapping(uint256 => address[]) public players; //addresses of players for a specific game id
     
     //Checks if there is an existing game with the same max number and entry fee

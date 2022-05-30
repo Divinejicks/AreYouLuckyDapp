@@ -38,9 +38,7 @@ export interface AYLRandomWinnerInterface extends utils.Interface {
     "joinGame(uint256,uint256)": FunctionFragment;
     "nextGameId()": FunctionFragment;
     "players(uint256,uint256)": FunctionFragment;
-    "randomNumbers(uint256)": FunctionFragment;
     "rawFulfillRandomWords(uint256,uint256[])": FunctionFragment;
-    "requestId()": FunctionFragment;
     "startGame(uint256,uint256)": FunctionFragment;
   };
 
@@ -56,9 +54,7 @@ export interface AYLRandomWinnerInterface extends utils.Interface {
       | "joinGame"
       | "nextGameId"
       | "players"
-      | "randomNumbers"
       | "rawFulfillRandomWords"
-      | "requestId"
       | "startGame"
   ): FunctionFragment;
 
@@ -100,14 +96,9 @@ export interface AYLRandomWinnerInterface extends utils.Interface {
     values: [BigNumberish, BigNumberish]
   ): string;
   encodeFunctionData(
-    functionFragment: "randomNumbers",
-    values: [BigNumberish]
-  ): string;
-  encodeFunctionData(
     functionFragment: "rawFulfillRandomWords",
     values: [BigNumberish, BigNumberish[]]
   ): string;
-  encodeFunctionData(functionFragment: "requestId", values?: undefined): string;
   encodeFunctionData(
     functionFragment: "startGame",
     values: [BigNumberish, BigNumberish]
@@ -136,18 +127,13 @@ export interface AYLRandomWinnerInterface extends utils.Interface {
   decodeFunctionResult(functionFragment: "nextGameId", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "players", data: BytesLike): Result;
   decodeFunctionResult(
-    functionFragment: "randomNumbers",
-    data: BytesLike
-  ): Result;
-  decodeFunctionResult(
     functionFragment: "rawFulfillRandomWords",
     data: BytesLike
   ): Result;
-  decodeFunctionResult(functionFragment: "requestId", data: BytesLike): Result;
   decodeFunctionResult(functionFragment: "startGame", data: BytesLike): Result;
 
   events: {
-    "GameEnded(address,uint256,uint256)": EventFragment;
+    "GameEnded(address,uint256)": EventFragment;
     "GameStarted(uint256,uint256,uint256)": EventFragment;
     "JoinedGame(address,uint256,uint256)": EventFragment;
   };
@@ -160,10 +146,9 @@ export interface AYLRandomWinnerInterface extends utils.Interface {
 export interface GameEndedEventObject {
   winner: string;
   amountWon: BigNumber;
-  requestId: BigNumber;
 }
 export type GameEndedEvent = TypedEvent<
-  [string, BigNumber, BigNumber],
+  [string, BigNumber],
   GameEndedEventObject
 >;
 
@@ -270,18 +255,11 @@ export interface AYLRandomWinner extends BaseContract {
       overrides?: CallOverrides
     ): Promise<[string]>;
 
-    randomNumbers(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<[BigNumber]>;
-
     rawFulfillRandomWords(
       requestId: BigNumberish,
       randomWords: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<ContractTransaction>;
-
-    requestId(overrides?: CallOverrides): Promise<[BigNumber]>;
 
     startGame(
       _maxNumOfPlayers: BigNumberish,
@@ -337,18 +315,11 @@ export interface AYLRandomWinner extends BaseContract {
     overrides?: CallOverrides
   ): Promise<string>;
 
-  randomNumbers(
-    arg0: BigNumberish,
-    overrides?: CallOverrides
-  ): Promise<BigNumber>;
-
   rawFulfillRandomWords(
     requestId: BigNumberish,
     randomWords: BigNumberish[],
     overrides?: Overrides & { from?: string | Promise<string> }
   ): Promise<ContractTransaction>;
-
-  requestId(overrides?: CallOverrides): Promise<BigNumber>;
 
   startGame(
     _maxNumOfPlayers: BigNumberish,
@@ -407,18 +378,11 @@ export interface AYLRandomWinner extends BaseContract {
       overrides?: CallOverrides
     ): Promise<string>;
 
-    randomNumbers(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     rawFulfillRandomWords(
       requestId: BigNumberish,
       randomWords: BigNumberish[],
       overrides?: CallOverrides
     ): Promise<void>;
-
-    requestId(overrides?: CallOverrides): Promise<BigNumber>;
 
     startGame(
       _maxNumOfPlayers: BigNumberish,
@@ -428,16 +392,11 @@ export interface AYLRandomWinner extends BaseContract {
   };
 
   filters: {
-    "GameEnded(address,uint256,uint256)"(
+    "GameEnded(address,uint256)"(
       winner?: null,
-      amountWon?: null,
-      requestId?: null
+      amountWon?: null
     ): GameEndedEventFilter;
-    GameEnded(
-      winner?: null,
-      amountWon?: null,
-      requestId?: null
-    ): GameEndedEventFilter;
+    GameEnded(winner?: null, amountWon?: null): GameEndedEventFilter;
 
     "GameStarted(uint256,uint256,uint256)"(
       gameId?: null,
@@ -507,18 +466,11 @@ export interface AYLRandomWinner extends BaseContract {
       overrides?: CallOverrides
     ): Promise<BigNumber>;
 
-    randomNumbers(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<BigNumber>;
-
     rawFulfillRandomWords(
       requestId: BigNumberish,
       randomWords: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<BigNumber>;
-
-    requestId(overrides?: CallOverrides): Promise<BigNumber>;
 
     startGame(
       _maxNumOfPlayers: BigNumberish,
@@ -572,18 +524,11 @@ export interface AYLRandomWinner extends BaseContract {
       overrides?: CallOverrides
     ): Promise<PopulatedTransaction>;
 
-    randomNumbers(
-      arg0: BigNumberish,
-      overrides?: CallOverrides
-    ): Promise<PopulatedTransaction>;
-
     rawFulfillRandomWords(
       requestId: BigNumberish,
       randomWords: BigNumberish[],
       overrides?: Overrides & { from?: string | Promise<string> }
     ): Promise<PopulatedTransaction>;
-
-    requestId(overrides?: CallOverrides): Promise<PopulatedTransaction>;
 
     startGame(
       _maxNumOfPlayers: BigNumberish,
