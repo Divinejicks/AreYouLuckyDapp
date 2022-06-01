@@ -56,7 +56,7 @@ const ProjectsIHaveWorkedOn = () => {
                 <p className="text-2xl text-black-600 text-center mb-4 ">
                   Check it out
                 </p>
-                <a href="https://peacekeeper-chainlink-hakathon2022-n4fr6yj62-peacekeepers.vercel.app/" target="_blank" className="font-medium tracking-wide py-2 sm:px-18 border border-orange-500 text-orange-500 bg-white-500 outline-none rounded-l-full rounded-r-full capitalize hover:bg-orange-500 hover:text-white-500 transition-all hover:shadow-orange "
+                <a href="https://peacekeeper-chainlink-hakathon2022.vercel.app/" target="_blank" className="font-medium tracking-wide py-2 sm:px-18 border border-orange-500 text-orange-500 bg-white-500 outline-none rounded-l-full rounded-r-full capitalize hover:bg-orange-500 hover:text-white-500 transition-all hover:shadow-orange "
                     >Peace Keepers</a>
               </div>
             </div>

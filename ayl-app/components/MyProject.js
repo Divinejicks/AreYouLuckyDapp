@@ -21,7 +21,7 @@ const MyProject = () => {
               alt="AreYouLuck"
               layout="responsive"
               quality={100}
-              height={500}
+              height={400}
               width={508}
             />
           </div>
